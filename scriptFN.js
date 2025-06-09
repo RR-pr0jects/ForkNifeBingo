@@ -52,12 +52,13 @@ for (let i = 0; i < 4; i++) {
     const cell = document.createElement("td");
     cell.textContent = `Row ${i + 1}, Col ${j + 1}`;
 
-    let holdTriggered = false; // Track if hold triggered
+    let holdTriggered = false;
+    let holdTimer = null;
 
-    // Enable text editing on click (with slight delay)
+    // ---- Click to Edit (skip if hold was triggered) ----
     cell.addEventListener("click", () => {
       if (holdTriggered || cell.querySelector("input")) return;
-      
+
       const currentText = cell.textContent;
       const input = document.createElement("input");
       input.type = "text";
@@ -79,22 +80,28 @@ for (let i = 0; i < 4; i++) {
       });
     });
 
-    // Click and hold to toggle background color
-    cell.addEventListener("mousedown", () => {
+    // ---- Hold-to-Toggle Background (Desktop + Mobile) ----
+    const startHold = () => {
       holdTriggered = false;
-      cell._holdTimer = setTimeout(() => {
+      holdTimer = setTimeout(() => {
         cell.classList.toggle("colored");
         holdTriggered = true;
       }, 500); // Hold duration
-    });
+    };
 
-    cell.addEventListener("mouseup", () => {
-      clearTimeout(cell._holdTimer);
-    });
+    const cancelHold = () => {
+      clearTimeout(holdTimer);
+    };
 
-    cell.addEventListener("mouseleave", () => {
-      clearTimeout(cell._holdTimer);
-    });
+    // Desktop events
+    cell.addEventListener("mousedown", startHold);
+    cell.addEventListener("mouseup", cancelHold);
+    cell.addEventListener("mouseleave", cancelHold);
+
+    // Mobile events
+    cell.addEventListener("touchstart", startHold);
+    cell.addEventListener("touchend", cancelHold);
+    cell.addEventListener("touchmove", cancelHold); // cancel if finger slides away
 
     row.appendChild(cell);
   }

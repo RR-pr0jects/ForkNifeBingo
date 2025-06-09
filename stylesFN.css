@@ -24,7 +24,7 @@ td {
   background-size: cover;
 }
 
-input {
+td input {
   width: 100%;
   box-sizing: border-box;
   text-align: center;
