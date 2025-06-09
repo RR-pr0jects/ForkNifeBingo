@@ -18,7 +18,7 @@ td {
   
 }
 
-td.colored {
+.colored {
   /* background-color: black; */
   background-image: url("https://tse2.mm.bing.net/th?id=OIP.mu_Ditz9HFtHcH8xGholjQHaGF&pid=Api&P=0&h=180");
   background-size: cover;
